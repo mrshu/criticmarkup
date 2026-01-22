@@ -48,7 +48,7 @@ If the input contains `{+-~TOC-CHANGES~-+}`, it will be replaced with a generate
 
 ## Examples
 
-### Markdown → Markdown
+### Markdown
 
 Input (`doc.md`):
 
@@ -89,7 +89,7 @@ We can <mark>highlight</mark> something.
 And leave a <!-- reviewer note --> comment.
 ```
 
-### AsciiDoc → AsciiDoc
+### AsciiDoc
 
 Input (`doc.adoc`):
 
@@ -131,7 +131,7 @@ We can [yellow]#highlight# something.
 And leave a footnote:[reviewer note] comment.
 ```
 
-### LaTeX → LaTeX
+### LaTeX
 
 Input (`doc.tex`):
 
