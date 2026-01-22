@@ -42,9 +42,50 @@ Override a preset template:
 criticmarkup convert input.md --addition-replacement-template "<ins>{CURRENT}</ins>"
 ```
 
+List built-in presets:
+
+```bash
+criticmarkup presets
+```
+
+## CriticMarkup syntax
+
+This tool follows the core CriticMarkup syntax (as described in the CriticMarkup Toolkit):
+
+- Addition: `{++added++}`
+- Deletion: `{--deleted--}`
+- Substitution: `{~~old~>new~~}`
+- Comment: `{>>comment<<}`
+- Highlight: `{==highlight==}` (commonly followed by a comment: `{==highlight==}{>>comment<<}`)
+
 ## Change list placeholder
 
 If the input contains `{+-~TOC-CHANGES~-+}`, it will be replaced with a generated list of change IDs/notes.
+
+## Configuration
+
+You can override templates either via CLI flags (e.g. `--addition-replacement-template`) or a TOML config file:
+
+```toml
+[templates]
+addition_replacement_template = "<ins>{CURRENT}</ins>"
+deletion_replacement_template = "<del>{PREVIOUS}</del>"
+```
+
+Common template variables:
+
+- `{CURRENT}`, `{PREVIOUS}`: raw matched text
+- `{CURRENT_SINGLELINE}`, `{PREVIOUS_SINGLELINE}`: whitespace collapsed
+- `{CURRENT_SHORT}`, `{PREVIOUS_SHORT}`: shortened (controlled by `--shorten-notes-at`)
+- `{CHANGE_ID}`, `{NOTE}`: generated id and note (for change refs / change list items)
+
+## Caveats
+
+CriticMarkup is designed to be readable and regex-friendly, but you can still break output if you try hard enough.
+In particular:
+
+- Avoid newlines inside CriticMarkup tags when possible.
+- When mixing with Markdown formatting, wrap the entire Markdown span in a single CriticMarkup mark (don’t split `*...*`).
 
 ## Examples
 
