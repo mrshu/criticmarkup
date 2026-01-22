@@ -9,6 +9,7 @@ description = "Fast CriticMarkup preprocessor with multiple output formats."
 readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["criticmarkup", "preprocessor", "asciidoc", "markdown", "latex"]
+license = { text = "MIT" }
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
@@ -17,6 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Environment :: Console",
   "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
   "Topic :: Text Processing :: Markup",
 ]
 dependencies = [
@@ -34,6 +36,12 @@ dev = [
 
 [project.scripts]
 criticmarkup = "criticmarkup.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/mrshu/criticmarkup"
+Repository = "https://github.com/mrshu/criticmarkup"
+Issues = "https://github.com/mrshu/criticmarkup/issues"
+Changelog = "https://github.com/mrshu/criticmarkup/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/criticmarkup"]
