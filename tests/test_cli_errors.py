@@ -7,6 +7,7 @@ import pytest
 from typer.testing import CliRunner
 
 from criticmarkup.cli import app
+from tests._helpers import strip_ansi
 
 
 def test_cli_in_place_and_output_are_mutually_exclusive(tmp_path: Path) -> None:
@@ -16,7 +17,7 @@ def test_cli_in_place_and_output_are_mutually_exclusive(tmp_path: Path) -> None:
     runner = CliRunner()
     res = runner.invoke(app, ["convert", str(inp), "--output", str(out), "--in-place"])
     assert res.exit_code != 0
-    assert "mutually exclusive" in res.output
+    assert "mutually exclusive" in strip_ansi(res.output)
 
 
 def test_cli_multiple_inputs_output_must_be_directory_when_file_exists(tmp_path: Path) -> None:
@@ -30,7 +31,7 @@ def test_cli_multiple_inputs_output_must_be_directory_when_file_exists(tmp_path:
     runner = CliRunner()
     res = runner.invoke(app, ["convert", str(a), str(b), "--output", str(out)])
     assert res.exit_code != 0
-    assert "directory" in res.output
+    assert "directory" in strip_ansi(res.output)
 
 
 def test_cli_infers_format_from_extension_markdown(tmp_path: Path) -> None:
@@ -48,14 +49,14 @@ def test_cli_rejects_mismatched_format_and_extension(tmp_path: Path) -> None:
     runner = CliRunner()
     res = runner.invoke(app, ["convert", str(inp), "--format", "asciidoc"])
     assert res.exit_code != 0
-    assert "looks like markdown" in res.output
+    assert "looks like markdown" in strip_ansi(res.output)
 
 
 def test_cli_stdin_requires_format_when_not_provided() -> None:
     runner = CliRunner()
     res = runner.invoke(app, ["convert", "-"], input="X {++a++}\n")
     assert res.exit_code != 0
-    assert "infer --format" in res.output
+    assert "infer --format" in strip_ansi(res.output)
 
 
 def test_cli_stdin_to_stdout(tmp_path: Path) -> None:

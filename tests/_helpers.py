@@ -12,6 +12,13 @@ def normalize_newlines(text: str) -> str:
     return text.replace("\r\n", "\n")
 
 
+def strip_ansi(text: str) -> str:
+    import re
+
+    ansi_escape = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
+    return ansi_escape.sub("", text)
+
+
 def read_fixture(name: str) -> str:
     fixtures = Path(__file__).parent / "fixtures"
     return normalize_newlines((fixtures / name).read_text(encoding="utf-8"))
