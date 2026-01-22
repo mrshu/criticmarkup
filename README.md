@@ -50,7 +50,8 @@ criticmarkup presets
 
 ## CriticMarkup syntax
 
-This tool follows the core CriticMarkup syntax (as described in the CriticMarkup Toolkit):
+This tool follows the core CriticMarkup syntax as documented by the CriticMarkup Toolkit:
+https://github.com/CriticMarkup/CriticMarkup-toolkit
 
 - Addition: `{++added++}`
 - Deletion: `{--deleted--}`
