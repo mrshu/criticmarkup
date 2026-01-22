@@ -22,7 +22,7 @@ def _extract_fenced_block(text: str, start_at: int) -> tuple[str, int]:
 
 
 def _extract_example(readme: str, heading: str) -> tuple[str, str]:
-    # Find "### <heading>" and then the first "Input" + "Output" code fences beneath it.
+    # Find "### <heading>" and then the first "#### Input" + "#### Output" fences beneath it.
     heading_re = re.compile(rf"^###\s+{re.escape(heading)}\s*$", re.MULTILINE)
     m = heading_re.search(readme)
     if not m:
@@ -33,15 +33,15 @@ def _extract_example(readme: str, heading: str) -> tuple[str, str]:
     section_end = next_heading.start() if next_heading else len(readme)
     section = readme[section_start:section_end]
 
-    input_marker = section.find("Input")
-    if input_marker == -1:
-        raise AssertionError(f"Missing Input marker in {heading!r} section.")
-    input_text, pos = _extract_fenced_block(section, input_marker)
+    input_marker = re.search(r"^####\s+Input\s*$", section, re.MULTILINE)
+    if not input_marker:
+        raise AssertionError(f"Missing '#### Input' marker in {heading!r} section.")
+    input_text, pos = _extract_fenced_block(section, input_marker.end())
 
-    output_marker = section.find("Output", pos)
-    if output_marker == -1:
-        raise AssertionError(f"Missing Output marker in {heading!r} section.")
-    output_text, _ = _extract_fenced_block(section, output_marker)
+    output_marker = re.search(r"^####\s+Output\s*$", section[pos:], re.MULTILINE)
+    if not output_marker:
+        raise AssertionError(f"Missing '#### Output' marker in {heading!r} section.")
+    output_text, _ = _extract_fenced_block(section, pos + output_marker.end())
 
     return input_text, output_text
 
@@ -62,4 +62,3 @@ def test_readme_examples_match_actual_output(heading: str, format_name: str) -> 
     expected = normalize_newlines(expected_output)
 
     assert actual.rstrip("\n") == expected.rstrip("\n")
-

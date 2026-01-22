@@ -134,6 +134,17 @@ def convert(
         shorten_notes_at = None
 
     overrides: dict[str, str] = {}
+
+    if config is not None:
+        cfg = _load_toml(config)
+        templates = cfg.get("templates", {})
+        if not isinstance(templates, dict):
+            raise typer.BadParameter("[templates] must be a TOML table.")
+        for key, value in templates.items():
+            if isinstance(value, str):
+                overrides[key] = value
+
+    # CLI flags override config (and presets).
     direct_overrides = {
         "addition_note_template": addition_note_template,
         "addition_replacement_template": addition_replacement_template,
@@ -147,15 +158,6 @@ def convert(
         "change_list_item_template": change_list_item_template,
     }
     overrides.update({k: v for k, v in direct_overrides.items() if v is not None})
-
-    if config is not None:
-        cfg = _load_toml(config)
-        templates = cfg.get("templates", {})
-        if not isinstance(templates, dict):
-            raise typer.BadParameter("[templates] must be a TOML table.")
-        for key, value in templates.items():
-            if isinstance(value, str):
-                overrides[key] = value
 
     if not inputs:
         inputs = [Path("-")]

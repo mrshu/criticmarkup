@@ -62,6 +62,72 @@ def test_cli_convert_uses_toml_template_overrides(tmp_path: Path) -> None:
     assert res.stdout == 'A <a id="addition-1"></a><!-- Added "b" -->\nXbX.'
 
 
+def test_cli_flags_override_toml_config(tmp_path: Path) -> None:
+    inp = tmp_path / "in.md"
+    inp.write_text("A {++b++}.", encoding="utf-8")
+    cfg = tmp_path / "criticmarkup.toml"
+    cfg.write_text(
+        "\n".join(
+            [
+                "[templates]",
+                'addition_replacement_template = "X{CURRENT}X"',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    runner = CliRunner()
+    res = runner.invoke(
+        app,
+        [
+            "convert",
+            str(inp),
+            "--format",
+            "markdown",
+            "--config",
+            str(cfg),
+            "--addition-replacement-template",
+            "Y{CURRENT}Y",
+        ],
+    )
+    assert res.exit_code == 0
+    assert res.stdout == 'A <a id="addition-1"></a><!-- Added "b" -->\nYbY.'
+
+
+def test_cli_toml_ignores_unknown_and_non_string_template_values(tmp_path: Path) -> None:
+    inp = tmp_path / "in.md"
+    inp.write_text("A {++b++}.", encoding="utf-8")
+    cfg = tmp_path / "criticmarkup.toml"
+    cfg.write_text(
+        "\n".join(
+            [
+                "[templates]",
+                'addition_replacement_template = "X{CURRENT}X"',
+                "not_a_template = \"ignored\"",
+                "deletion_replacement_template = 123",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    runner = CliRunner()
+    res = runner.invoke(
+        app,
+        [
+            "convert",
+            str(inp),
+            "--format",
+            "markdown",
+            "--config",
+            str(cfg),
+        ],
+    )
+    assert res.exit_code == 0
+    assert res.stdout == 'A <a id="addition-1"></a><!-- Added "b" -->\nXbX.'
+
+
 def test_cli_multiple_inputs_to_directory_and_suffix(tmp_path: Path) -> None:
     a = tmp_path / "a.adoc"
     b = tmp_path / "b.adoc"

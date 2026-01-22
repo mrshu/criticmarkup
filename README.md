@@ -92,9 +92,9 @@ In particular:
 
 ### Markdown
 
-Input (`doc.md`):
+#### Input
 
-```md
+```markdown
 Intro paragraph.
 
 {+-~TOC-CHANGES~-+}
@@ -106,15 +106,15 @@ We can {==highlight==} something.
 And leave a {>>reviewer note<<} comment.
 ```
 
-Command:
+#### Command
 
 ```bash
 criticmarkup convert doc.md --in-place
 ```
 
-Output (`doc.md`):
+#### Output
 
-```md
+```markdown
 Intro paragraph.
 
 - [addition-1](#addition-1): Added "add new text"
@@ -133,7 +133,7 @@ And leave a <!-- reviewer note --> comment.
 
 ### AsciiDoc
 
-Input (`doc.adoc`):
+#### Input
 
 ```adoc
 Intro paragraph.
@@ -147,13 +147,13 @@ We can {==highlight==} something.
 And leave a {>>reviewer note<<} comment.
 ```
 
-Command:
+#### Command
 
 ```bash
 criticmarkup convert doc.adoc --in-place
 ```
 
-Output (`doc.adoc`):
+#### Output
 
 ```adoc
 Intro paragraph.
@@ -175,7 +175,7 @@ And leave a footnote:[reviewer note] comment.
 
 ### LaTeX
 
-Input (`doc.tex`):
+#### Input
 
 ```tex
 Intro paragraph.
@@ -189,13 +189,13 @@ We can {==highlight==} something.
 And leave a {>>reviewer note<<} comment.
 ```
 
-Command:
+#### Command
 
 ```bash
 criticmarkup convert doc.tex --in-place
 ```
 
-Output (`doc.tex`):
+#### Output
 
 ```tex
 Intro paragraph.
