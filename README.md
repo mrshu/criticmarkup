@@ -171,21 +171,3 @@ We % substitution-1: Changed "replace this" to "with that"
 We can \fbox{{highlight}} something.
 And leave a % NOTE: reviewer note comment.
 ```
-
-## Publishing (PyPI)
-
-Build:
-
-```bash
-uv build
-```
-
-Publish (token):
-
-```bash
-uv publish -t "$UV_PUBLISH_TOKEN"
-```
-
-Publish (GitHub Actions trusted publishing):
-
-- Tag a release like `v0.1.0`; the workflow in `.github/workflows/publish.yml` will build and publish.
